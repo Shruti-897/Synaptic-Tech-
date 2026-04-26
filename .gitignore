@@ -1,34 +1,117 @@
-# Gradle files
-.gradle/
-build/
+import 'package:flutter/material.dart';
 
-# Local configuration file (sdk path, etc)
-local.properties
+void main() => runApp(const ReliefLinkApp());
 
-# Log/OS Files
-*.log
+class ReliefLinkApp extends StatelessWidget {
+  const ReliefLinkApp({super.key});
 
-# Android Studio generated files and folders
-captures/
-.externalNativeBuild/
-.cxx/
-*.aab
-*.apk
-output-metadata.json
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
+      home: const MainInterface(),
+    );
+  }
+}
 
-# IntelliJ
-*.iml
-.idea/
-misc.xml
-deploymentTargetDropDown.xml
-render.experimental.xml
+class MainInterface extends StatelessWidget {
+  const MainInterface({super.key});
 
-# Keystore files
-*.jks
-*.keystore
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('ReliefLink AI', style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              "Select your role to continue",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18, color: Colors.grey),
+            ),
+            const SizedBox(height: 30),
 
-# Google Services (e.g. APIs or Firebase)
-google-services.json
+            // 1. COMPLAINANT BUTTON
+            _buildRoleCard(
+              context,
+              title: "File a Complaint",
+              subtitle: "Report needs via Form, Image, or Voice",
+              icon: Icons.report_problem_outlined,
+              color: Colors.redAccent,
+              onTap: () {
+                // Navigate to Complainant Form
+              },
+            ),
 
-# Android Profiling
-*.hprof
+            const SizedBox(height: 16),
+
+            // 2. VOLUNTEER BUTTON
+            _buildRoleCard(
+              context,
+              title: "Become a Volunteer",
+              subtitle: "Medical, Education, Food, or Other aid",
+              icon: Icons.handshake_outlined,
+              color: Colors.green.shade700,
+              onTap: () {
+                // Navigate to Volunteer Registration
+              },
+            ),
+
+            const SizedBox(height: 16),
+
+            // 3. NGO / ORGANIZATION BUTTON
+            _buildRoleCard(
+              context,
+              title: "Organization Portal",
+              subtitle: "Bulk data upload for verified NGOs",
+              icon: Icons.account_balance_outlined,
+              color: Colors.blue.shade800,
+              onTap: () {
+                // Navigate to NGO Verification & Excel Upload
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRoleCard(BuildContext context, 
+      {required String title, required String subtitle, required IconData icon, required Color color, required VoidCallback onTap}) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(15),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          border: Border.all(color: color.withOpacity(0.5)),
+          borderRadius: BorderRadius.circular(15),
+          color: color.withOpacity(0.05),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, size: 40, color: color),
+            const SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: color)),
+                  Text(subtitle, style: const TextStyle(fontSize: 13, color: Colors.black54)),
+                ],
+              ),
+            ),
+            Icon(Icons.arrow_forward_ios, size: 16, color: color),
+          ],
+        ),
+      ),
+    );
+  }
+}
